@@ -1,0 +1,8 @@
+Flask
+numpy
+pandas
+passporteye
+flask_cors
+pytesseract
+python-dotenv
+gunicorn
