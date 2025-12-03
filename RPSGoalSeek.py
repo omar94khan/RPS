@@ -164,12 +164,12 @@ def RPS(
                 if GracePeriodProfitRate:
                     pass
                 else:
-                    GracePeriodProfit = ProfitRate
+                    GracePeriodProfitRate = ProfitRate
                     
 
                 nGraceMonths = ((GracePeriodYear - DisbursementYear) * 12) + GracePeriodMonth - DisbursementMonth
                 GracePeriodTakaful = rps['OutstandingPrincipal'][-1] * TakafulFactor * nGraceMonths
-                GracePeriodProfit = rps['OutstandingPrincipal'][-1] * GracePeriodProfit / 360 * rps['Days'][-1]
+                GracePeriodProfit = rps['OutstandingPrincipal'][-1] * GracePeriodProfitRate / 360 * rps['Days'][-1]
 
                 SNo = 2
 
