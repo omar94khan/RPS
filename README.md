@@ -1,4 +1,4 @@
-*Documentation*
+**Documentation**
 
 The purpose of this project was to initially solve a problem that the bank had with regards to quickly generating repayment schedules for loans that they were disbursing.
 
