@@ -1,3 +1,5 @@
+*Documentation*
+
 The purpose of this project was to initially solve a problem that the bank had with regards to quickly generating repayment schedules for loans that they were disbursing.
 
 There are four different repayment schedule types that get generated. 
@@ -180,7 +182,7 @@ This API is used to generate the RPS where we give the system the profit rate we
  ```
 {
     "FinanceAmount": 2400,                        // Same as above
-    "ProfitRate": 0.05,                           // This signifies the rate at which the client will be charged a profit each month. Format = annualized profit rate as a decimal.
+    "ProfitRate": 5,                              // This signifies the rate at which the client will be charged a profit each month. Format = annualized profit rate as a percentage.
     "TenorMonths": 12,                            // Same as above
     "PayDay": 28,                                 // Same as above
     "DisbursementDate": "20251202",               // Same as above
@@ -221,134 +223,134 @@ Sample Response:
     {
         "Date": "2026-04-28",
         "Days": 85,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 20.667,
-        "GracePeriodTakafulRecovery": 0.59,
-        "OutstandingPrincipal": 2201.486,
-        "PrincipalAmount": 198.514,
-        "ProfitAmount": 0.283,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 387.304,
+        "GracePeriodTakafulRecovery": 0.0,
+        "OutstandingPrincipal": 2400.0,
+        "PrincipalAmount": 0.0,
+        "ProfitAmount": 28.333,
         "SNo": 2,
         "TakafulAmount": 0.295
     },
     {
         "Date": "2026-05-28",
         "Days": 30,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 0.0,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 405.637,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 1981.5,
-        "PrincipalAmount": 219.987,
-        "ProfitAmount": 0.092,
+        "OutstandingPrincipal": 2400.0,
+        "PrincipalAmount": 0.0,
+        "ProfitAmount": 10.0,
         "SNo": 3,
-        "TakafulAmount": 0.27
+        "TakafulAmount": 0.295
     },
     {
         "Date": "2026-06-28",
         "Days": 31,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 0.0,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 405.304,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 1761.48,
-        "PrincipalAmount": 220.02,
-        "ProfitAmount": 0.085,
+        "OutstandingPrincipal": 2400.0,
+        "PrincipalAmount": 0.0,
+        "ProfitAmount": 10.333,
         "SNo": 4,
-        "TakafulAmount": 0.244
+        "TakafulAmount": 0.295
     },
     {
         "Date": "2026-07-28",
         "Days": 30,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 0.0,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 405.637,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 1541.421,
-        "PrincipalAmount": 220.059,
-        "ProfitAmount": 0.073,
+        "OutstandingPrincipal": 2400.0,
+        "PrincipalAmount": 0.0,
+        "ProfitAmount": 10.0,
         "SNo": 5,
-        "TakafulAmount": 0.217
+        "TakafulAmount": 0.295
     },
     {
         "Date": "2026-08-28",
         "Days": 31,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 0.0,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 405.304,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 1321.328,
-        "PrincipalAmount": 220.093,
-        "ProfitAmount": 0.066,
+        "OutstandingPrincipal": 2400.0,
+        "PrincipalAmount": 0.0,
+        "ProfitAmount": 10.333,
         "SNo": 6,
-        "TakafulAmount": 0.19
+        "TakafulAmount": 0.295
     },
     {
         "Date": "2026-09-28",
         "Days": 31,
-        "EMI": 220.349,
-        "GracePeriodProfitRecovery": 0.0,
-        "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 1101.198,
-        "PrincipalAmount": 220.13,
-        "ProfitAmount": 0.057,
+        "EMI": 415.932,
+        "GracePeriodProfitRecovery": 57.481,
+        "GracePeriodTakafulRecovery": 0.59,
+        "OutstandingPrincipal": 2052.767,
+        "PrincipalAmount": 347.233,
+        "ProfitAmount": 10.333,
         "SNo": 7,
-        "TakafulAmount": 0.162
+        "TakafulAmount": 0.295
     },
     {
         "Date": "2026-10-28",
         "Days": 30,
-        "EMI": 220.349,
+        "EMI": 415.932,
         "GracePeriodProfitRecovery": 0.0,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 881.031,
-        "PrincipalAmount": 220.168,
-        "ProfitAmount": 0.046,
+        "OutstandingPrincipal": 1645.641,
+        "PrincipalAmount": 407.127,
+        "ProfitAmount": 8.553,
         "SNo": 8,
-        "TakafulAmount": 0.135
+        "TakafulAmount": 0.252
     },
     {
         "Date": "2026-11-28",
         "Days": 31,
-        "EMI": 220.349,
+        "EMI": 415.932,
         "GracePeriodProfitRecovery": 0.0,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 660.828,
-        "PrincipalAmount": 220.203,
-        "ProfitAmount": 0.038,
+        "OutstandingPrincipal": 1236.997,
+        "PrincipalAmount": 408.644,
+        "ProfitAmount": 7.085,
         "SNo": 9,
-        "TakafulAmount": 0.108
+        "TakafulAmount": 0.203
     },
     {
         "Date": "2026-12-28",
         "Days": 30,
-        "EMI": 220.349,
+        "EMI": 415.932,
         "GracePeriodProfitRecovery": 0.0,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 440.588,
-        "PrincipalAmount": 220.24,
-        "ProfitAmount": 0.028,
+        "OutstandingPrincipal": 826.371,
+        "PrincipalAmount": 410.626,
+        "ProfitAmount": 5.154,
         "SNo": 10,
-        "TakafulAmount": 0.081
+        "TakafulAmount": 0.152
     },
     {
         "Date": "2027-01-28",
         "Days": 31,
-        "EMI": 220.349,
+        "EMI": 415.932,
         "GracePeriodProfitRecovery": 0.0,
         "GracePeriodTakafulRecovery": 0.0,
-        "OutstandingPrincipal": 220.312,
-        "PrincipalAmount": 220.276,
-        "ProfitAmount": 0.019,
+        "OutstandingPrincipal": 414.098,
+        "PrincipalAmount": 412.272,
+        "ProfitAmount": 3.558,
         "SNo": 11,
-        "TakafulAmount": 0.054
+        "TakafulAmount": 0.102
     },
     {
         "Date": "2027-02-28",
         "Days": 31,
-        "EMI": 220.349,
+        "EMI": 415.932,
         "GracePeriodProfitRecovery": 0.0,
         "GracePeriodTakafulRecovery": 0.0,
         "OutstandingPrincipal": 0.0,
-        "PrincipalAmount": 220.31,
-        "ProfitAmount": 0.009,
+        "PrincipalAmount": 414.098,
+        "ProfitAmount": 1.783,
         "SNo": 12,
-        "TakafulAmount": 0.03
+        "TakafulAmount": 0.051
     }
 ]
 ```
