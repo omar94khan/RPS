@@ -38,14 +38,14 @@ Sample Response:
     "ProfitRate": 28.36,
     "RPS": [
         {
-            "Date": "2025-12-02",
-            "Days": 0,
-            "EMI": 0.0,
-            "OutstandingPrincipal": 2400.0,
-            "PrincipalAmount": 0.0,
-            "ProfitAmount": 0.0,
-            "SNo": 0,
-            "TakafulAmount": 0.0
+            "Date": "2025-12-02",                     // Installment Date
+            "Days": 0,                                // Number of Days since the last installment
+            "EMI": 0.0,                               // Installment Amount
+            "OutstandingPrincipal": 2400.0,           // The remaining principal of the loan
+            "PrincipalAmount": 0.0,                   // The amount of principal being paid off in this installment
+            "ProfitAmount": 0.0,                      // The amount of profit being paid off in this installment
+            "SNo": 0,                                 // Serial Number. (SNo == 0 will always be a line showing the disbursement of the loan, for initialization)
+            "TakafulAmount": 0.0                      // The amount of insurance being paid in this installment
         },
         {
             "Date": "2026-01-02",
