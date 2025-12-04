@@ -312,7 +312,7 @@ def RPS(
         else:
             CurrentMonth += 1
             
-        CurrentDate = date(CurrentYear, CurrentMonth, CurrentDay)
+        CurrentDate = date(CurrentYear, CurrentMonth, PayDay)
         
         GracePeriodYear = int(GracePeriodDate[0:4])
         GracePeriodMonth = int(GracePeriodDate[4:6])
@@ -339,7 +339,7 @@ def RPS(
                 CurrentYear += 1
             else:
                 CurrentMonth += 1
-            CurrentDate = date(CurrentYear, CurrentMonth, CurrentDay)
+            CurrentDate = date(CurrentYear, CurrentMonth, PayDay)
 
 
         for i in range(SNo, TenorMonths+1):
@@ -371,7 +371,7 @@ def RPS(
                 CurrentYear += 1
             else:
                 CurrentMonth += 1
-            CurrentDate = date(CurrentYear, CurrentMonth, CurrentDay)
+            CurrentDate = date(CurrentYear, CurrentMonth, PayDay)
 
 
     else:
