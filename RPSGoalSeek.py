@@ -305,16 +305,16 @@ def RPS(
 
         SNo = 1
 
-        CurrentDay = DisbursementDay
         CurrentMonth = DisbursementMonth
         CurrentYear = DisbursementYear
 
-        # Incrementing CurrentDate by 1 month
-        if CurrentMonth == 12:
-            CurrentMonth = 1
-            CurrentYear += 1
-        else:
-            CurrentMonth += 1
+        if date(CurrentYear, CurrentMonth, PayDay) <= date(DisbursementYear, DisbursementMonth, DisbursementDay):    
+            # Incrementing CurrentDate by 1 month
+            if CurrentMonth == 12:
+                CurrentMonth = 1
+                CurrentYear += 1
+            else:
+                CurrentMonth += 1
             
         CurrentDate = date(CurrentYear, CurrentMonth, PayDay)
         
