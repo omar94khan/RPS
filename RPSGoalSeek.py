@@ -161,10 +161,12 @@ def RPS(
 
                 # Calculating Grace Period Takaful and Profit
                 
-                if GracePeriodProfitRate:
-                    pass
-                else:
+                if GracePeriodProfitRate is None:
+                    print("GracePeriodProfitRate not found, setting to ProfitRate")
                     GracePeriodProfitRate = ProfitRate
+                else:
+                    print("GracePeriodProfitRate found: ", GracePeriodProfitRate)
+    
                     
 
                 nGraceMonths = ((GracePeriodYear - DisbursementYear) * 12) + GracePeriodMonth - DisbursementMonth
@@ -172,11 +174,11 @@ def RPS(
                 GracePeriodProfit = rps['OutstandingPrincipal'][-1] * GracePeriodProfitRate / 360 * rps['Days'][-1]
 
                 SNo = 2
+                year = FirstEMIYear
+                month = FirstEMIMonth
+                day = PayDay
 
                 for i in range(SNo, TenorMonths+1):
-                    year = FirstEMIYear + ((FirstEMIMonth + (i-2))//12)
-                    month = ((FirstEMIMonth + (i-2)) % 12) + 1
-                    day = PayDay
                     rps['SNo'].append(i)
                     rps['Date'].append(date(year, month, day))
                     rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
@@ -203,6 +205,8 @@ def RPS(
 
 
                     SNo += 1
+                    year = FirstEMIYear + ((FirstEMIMonth + (i-2))//12)
+                    month = ((FirstEMIMonth + (i-2)) % 12) + 1
 
 
 
@@ -278,11 +282,11 @@ def RPS(
             raise ValueError("Grace period cannot end on the same date as the loan disbursement. Please adjust GracePeriodDate value.")
         
         if GracePeriodProfitRate is None:
-            print("GracePeriodProfitRate not found, setting to ProfitRate = ", ProfitRate)
+            print("GracePeriodProfitRate not found, setting to ProfitRate")
             GracePeriodProfitRate = ProfitRate
         else:
             print("GracePeriodProfitRate found: ", GracePeriodProfitRate)
-
+    
         # Creating the first row to show the disbursement of the loan
 
         rps['SNo'].append(0)

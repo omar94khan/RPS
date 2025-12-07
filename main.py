@@ -47,12 +47,8 @@ def rpsgenerate():
     TakafulFactor = data.get('TakafulFactor')
     repaymentMethod = data.get('repaymentMethod')
     GracePeriodProfitRate = data.get('GracePeriodProfitRate')
-    if GracePeriodProfitRate is None:
-        print("GracePeriodProfitRate not found, setting to ProfitRate")
-        GracePeriodProfitRate = ProfitRate
-    else:
-        print("GracePeriodProfitRate found: ", GracePeriodProfitRate)
     
+
     result = goalSeek(
         FinanceAmount=FinanceAmount,
         ProfitRate=ProfitRate,
