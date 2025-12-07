@@ -178,7 +178,7 @@ def RPS(
                 month = FirstEMIMonth
                 day = PayDay
 
-                for i in range(SNo, TenorMonths+1):
+                for i in range(SNo, TenorMonths+1 - nGraceMonths):
                     rps['SNo'].append(i)
                     rps['Date'].append(date(year, month, day))
                     rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
