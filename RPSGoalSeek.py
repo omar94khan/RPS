@@ -108,161 +108,114 @@ def RPS(
 
 
     elif repaymentMethod == "Grace":
-                rps = {
-                    'SNo' : [],
-                    'Date' : [],
-                    'Days' : [],
-                    'EMI' : [],
-                    "GracePeriodProfitRecovery" : [],
-                    "GracePeriodTakafulRecovery" : [],
-                    'ProfitAmount' : [],
-                    'TakafulAmount' : [],
-                    'PrincipalAmount' : [],
-                    'OutstandingPrincipal' : []
-                }
+        rps = {
+            'SNo' : [],
+            'Date' : [],
+            'Days' : [],
+            'EMI' : [],
+            "GracePeriodProfitRecovery" : [],
+            "GracePeriodTakafulRecovery" : [],
+            'ProfitAmount' : [],
+            'TakafulAmount' : [],
+            'PrincipalAmount' : [],
+            'OutstandingPrincipal' : []
+           }
 
-                if GracePeriodDate == DisbursementDate:
-                    raise ValueError("Grace period cannot end on the same date as the loan disbursement. Please adjust GracePeriodDate value.")
-                
-                
-                GracePeriodYear = int(GracePeriodDate[0:4])
-                GracePeriodMonth = int(GracePeriodDate[4:6])
-                GracePeriodDay = int(GracePeriodDate[6:8])
+        distributionMonths = 1
 
+        if GracePeriodDate == DisbursementDate:
+            raise ValueError("Grace period cannot end on the same date as the loan disbursement. Please adjust GracePeriodDate value.")
+        
+        
+        GracePeriodYear = int(GracePeriodDate[0:4])
+        GracePeriodMonth = int(GracePeriodDate[4:6])
+        GracePeriodDay = int(GracePeriodDate[6:8])
 
-                # Creating the first row to show the disbursement of the loan
-
-                rps['SNo'].append(0)
-                rps['Date'].append(date(DisbursementYear, DisbursementMonth, DisbursementDay))
-                rps['Days'].append(0)
-                rps['EMI'].append(0)
-                rps['ProfitAmount'].append(0)
-                rps['TakafulAmount'].append(0)
-                rps['GracePeriodTakafulRecovery'].append(0)
-                rps['GracePeriodProfitRecovery'].append(0)
-                rps['PrincipalAmount'].append(0)
-                rps['OutstandingPrincipal'].append(FinanceAmount)
-
-
-                # Creating the second row to show the end of grace period
-
-                rps['SNo'].append(1)
-                rps['Date'].append(date(GracePeriodYear, GracePeriodMonth, GracePeriodDay))  
-                rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
-                rps['EMI'].append(0)
-                rps['ProfitAmount'].append(0)
-                rps['TakafulAmount'].append(0)
-                rps['GracePeriodTakafulRecovery'].append(0)
-                rps['GracePeriodProfitRecovery'].append(0)
-                rps['PrincipalAmount'].append(0)
-                rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1])
+        rps['SNo'].append(0)
+        rps['Date'].append(date(DisbursementYear, DisbursementMonth, DisbursementDay))
+        rps['Days'].append(0)
+        rps['EMI'].append(0)
+        rps['ProfitAmount'].append(0)
+        rps['TakafulAmount'].append(0)
+        rps['GracePeriodTakafulRecovery'].append(0)
+        rps['GracePeriodProfitRecovery'].append(0)
+        rps['PrincipalAmount'].append(0)
+        rps['OutstandingPrincipal'].append(FinanceAmount)
 
 
 
-                # Calculating Grace Period Takaful and Profit
-                
-                if GracePeriodProfitRate is None:
-                    print("GracePeriodProfitRate not found, setting to ProfitRate")
-                    GracePeriodProfitRate = ProfitRate
-                else:
-                    print("GracePeriodProfitRate found: ", GracePeriodProfitRate)
-    
-                    
+        rps['SNo'].append(1)
+        rps['Date'].append(date(GracePeriodYear, GracePeriodMonth, GracePeriodDay))  
+        rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
+        rps['EMI'].append(0)
+        rps['ProfitAmount'].append(0)
+        rps['TakafulAmount'].append(0)
+        rps['GracePeriodTakafulRecovery'].append(0)
+        rps['GracePeriodProfitRecovery'].append(0)
+        rps['PrincipalAmount'].append(0)
+        rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1])
 
-                nGraceMonths = ((GracePeriodYear - DisbursementYear) * 12) + GracePeriodMonth - DisbursementMonth
-                GracePeriodTakaful = rps['OutstandingPrincipal'][-1] * TakafulFactor * nGraceMonths
-                GracePeriodProfit = rps['OutstandingPrincipal'][-1] * GracePeriodProfitRate / 360 * rps['Days'][-1]
 
-                SNo = 2
-                year = FirstEMIYear
-                month = FirstEMIMonth
+        nGraceMonths = ((GracePeriodYear - DisbursementYear) * 12) + GracePeriodMonth - DisbursementMonth
+        # GracePeriodTakaful = rps['OutstandingPrincipal'][-1] * TakafulFactor * rps['Days'][-1] / 30
+        GracePeriodTakaful = rps['OutstandingPrincipal'][-1] * TakafulFactor * nGraceMonths
+        GracePeriodProfit = rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1]
+
+        while True:
+            rps_copy = deepcopy(rps)
+            for i in range(0,distributionMonths):
+                year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
+                month = ((FirstEMIMonth + (i-1)) % 12) + 1
                 day = PayDay
+                rps_copy['Date'].append(date(year, month, day))  
+                rps_copy['Days'].append((rps_copy['Date'][-1] - rps_copy['Date'][-2]).days)
+                rps_copy['ProfitAmount'].append(rps_copy['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps_copy['Days'][-1])
+                # rps_copy['TakafulAmount'].append(rps_copy['OutstandingPrincipal'][-1] * TakafulFactor * rps_copy['Days'][-1] / 30)
+                rps_copy['TakafulAmount'].append(rps_copy['OutstandingPrincipal'][-1] * TakafulFactor)
+                rps_copy['GracePeriodTakafulRecovery'].append(GracePeriodTakaful / distributionMonths)
+                rps_copy['GracePeriodProfitRecovery'].append(GracePeriodProfit / distributionMonths)
+                rps_copy['EMI'].append(EMI)
+                rps_copy['PrincipalAmount'].append(rps_copy['EMI'][-1] - rps_copy['ProfitAmount'][-1] - rps_copy['TakafulAmount'][-1] - rps_copy['GracePeriodTakafulRecovery'][-1] - rps_copy['GracePeriodProfitRecovery'][-1])
+                rps_copy['OutstandingPrincipal'].append(rps_copy['OutstandingPrincipal'][-1] - rps_copy['PrincipalAmount'][-1])
+        
+            if sum(1 for i in rps_copy['PrincipalAmount'] if i < 0)== 0:
+                break
+            else:
+                distributionMonths += 1
 
-                for i in range(SNo, TenorMonths+2 - nGraceMonths):
-                    rps['SNo'].append(i)
-                    rps['Date'].append(date(year, month, day))
-                    rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
+        GraceMonths = (((GracePeriodYear - DisbursementYear) * 12) + GracePeriodMonth) - DisbursementMonth
 
-                    rps['EMI'].append(EMI)
-                    EMI_Remaining = EMI
-                    
-                    rps['ProfitAmount'].append(rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1])
-                    EMI_Remaining = EMI_Remaining - rps['ProfitAmount'][-1]
-                    
-                    rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor)
-                    EMI_Remaining = EMI_Remaining - rps['TakafulAmount'][-1]
-
-                    rps['GracePeriodProfitRecovery'].append(max(min(EMI_Remaining, GracePeriodProfit),0))
-                    GracePeriodProfit -= rps['GracePeriodProfitRecovery'][-1]
-                    EMI_Remaining = EMI_Remaining - rps['GracePeriodProfitRecovery'][-1]
-                    
-                    rps['GracePeriodTakafulRecovery'].append(max(min(EMI_Remaining, GracePeriodTakaful),0))
-                    GracePeriodTakaful -= rps['GracePeriodTakafulRecovery'][-1]
-                    EMI_Remaining = EMI_Remaining - rps['GracePeriodTakafulRecovery'][-1]
-
-                    rps['PrincipalAmount'].append(max(EMI_Remaining,0))
-                    rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1] - rps['PrincipalAmount'][-1])
-
-
-                    SNo += 1
-                    year = FirstEMIYear + ((FirstEMIMonth + (i-2))//12)
-                    month = ((FirstEMIMonth + (i-2)) % 12) + 1
-
-
-
-                # while True:
-                #     rps_copy = deepcopy(rps)
-                #     for i in range(0,distributionMonths):
-                #         year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
-                #         month = ((FirstEMIMonth + (i-1)) % 12) + 1
-                #         day = PayDay
-                #         rps_copy['Date'].append(date(year, month, day))  
-                #         rps_copy['Days'].append((rps_copy['Date'][-1] - rps_copy['Date'][-2]).days)
-                #         rps_copy['ProfitAmount'].append(rps_copy['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps_copy['Days'][-1])
-                #         # rps_copy['TakafulAmount'].append(rps_copy['OutstandingPrincipal'][-1] * TakafulFactor * rps_copy['Days'][-1] / 30)
-                #         rps_copy['TakafulAmount'].append(rps_copy['OutstandingPrincipal'][-1] * TakafulFactor)
-                #         rps_copy['GracePeriodTakafulRecovery'].append(GracePeriodTakaful / distributionMonths)
-                #         rps_copy['GracePeriodProfitRecovery'].append(GracePeriodProfit / distributionMonths)
-                #         rps_copy['EMI'].append(EMI)
-                #         rps_copy['PrincipalAmount'].append(rps_copy['EMI'][-1] - rps_copy['ProfitAmount'][-1] - rps_copy['TakafulAmount'][-1] - rps_copy['GracePeriodTakafulRecovery'][-1] - rps_copy['GracePeriodProfitRecovery'][-1])
-                #         rps_copy['OutstandingPrincipal'].append(rps_copy['OutstandingPrincipal'][-1] - rps_copy['PrincipalAmount'][-1])
+        for i in range(0,TenorMonths-GraceMonths):
+            rps['SNo'].append(2+i)   
+            if i in range (0, distributionMonths):
+                year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
+                month = ((FirstEMIMonth + (i-1)) % 12) + 1
+                day = PayDay
+                rps['Date'].append(date(year, month, day))  
+                rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
+                rps['ProfitAmount'].append(rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1])
+                # rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor * rps['Days'][-1] / 30)
+                rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor)
+                rps['GracePeriodTakafulRecovery'].append(GracePeriodTakaful / distributionMonths)
+                rps['GracePeriodProfitRecovery'].append(GracePeriodProfit / distributionMonths)
+                rps['EMI'].append(EMI)
+                rps['PrincipalAmount'].append(max(0,rps['EMI'][-1] - rps['ProfitAmount'][-1] - rps['TakafulAmount'][-1] - rps['GracePeriodTakafulRecovery'][-1] - rps['GracePeriodProfitRecovery'][-1]))
+                rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1] - rps['PrincipalAmount'][-1])
                 
-                #     if sum(1 for i in rps_copy['PrincipalAmount'] if i < 0)== 0:
-                #         break
-                #     else:
-                #         distributionMonths += 1
-
-                # for i in range(0,TenorMonths-nGraceMonths):
-                #     rps['SNo'].append(2+i)   
-                #     if i in range (0, distributionMonths):
-                #         year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
-                #         month = ((FirstEMIMonth + (i-1)) % 12) + 1
-                #         day = PayDay
-                #         rps['Date'].append(date(year, month, day))  
-                #         rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
-                #         rps['ProfitAmount'].append(rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1])
-                #         # rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor * rps['Days'][-1] / 30)
-                #         rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor)
-                #         rps['GracePeriodTakafulRecovery'].append(GracePeriodTakaful / distributionMonths)
-                #         rps['GracePeriodProfitRecovery'].append(GracePeriodProfit / distributionMonths)
-                #         rps['EMI'].append(EMI)
-                #         rps['PrincipalAmount'].append(max(0,rps['EMI'][-1] - rps['ProfitAmount'][-1] - rps['TakafulAmount'][-1] - rps['GracePeriodTakafulRecovery'][-1] - rps['GracePeriodProfitRecovery'][-1]))
-                #         rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1] - rps['PrincipalAmount'][-1])
-                        
-                #     else:
-                #         year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
-                #         month = ((FirstEMIMonth + (i-1)) % 12) + 1
-                #         day = PayDay
-                #         rps['Date'].append(date(year, month, day))  
-                #         rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
-                #         rps['EMI'].append(EMI)
-                #         rps['ProfitAmount'].append(rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1])
-                #         # rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor * rps['Days'][-1] / 30)
-                #         rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor)
-                #         rps['GracePeriodTakafulRecovery'].append(0)
-                #         rps['GracePeriodProfitRecovery'].append(0)
-                #         rps['PrincipalAmount'].append(max(0,rps['EMI'][-1] - rps['ProfitAmount'][-1] - rps['TakafulAmount'][-1] - rps['GracePeriodTakafulRecovery'][-1] - rps['GracePeriodProfitRecovery'][-1]))
-                #         rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1] - rps['PrincipalAmount'][-1])
+            else:
+                year = FirstEMIYear + ((FirstEMIMonth + (i-1))//12)
+                month = ((FirstEMIMonth + (i-1)) % 12) + 1
+                day = PayDay
+                rps['Date'].append(date(year, month, day))  
+                rps['Days'].append((rps['Date'][-1] - rps['Date'][-2]).days)
+                rps['EMI'].append(EMI)
+                rps['ProfitAmount'].append(rps['OutstandingPrincipal'][-1] * ProfitRate / 360 * rps['Days'][-1])
+                # rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor * rps['Days'][-1] / 30)
+                rps['TakafulAmount'].append(rps['OutstandingPrincipal'][-1] * TakafulFactor)
+                rps['GracePeriodTakafulRecovery'].append(0)
+                rps['GracePeriodProfitRecovery'].append(0)
+                rps['PrincipalAmount'].append(max(0,rps['EMI'][-1] - rps['ProfitAmount'][-1] - rps['TakafulAmount'][-1] - rps['GracePeriodTakafulRecovery'][-1] - rps['GracePeriodProfitRecovery'][-1]))
+                rps['OutstandingPrincipal'].append(rps['OutstandingPrincipal'][-1] - rps['PrincipalAmount'][-1])
 
     elif repaymentMethod == "PrincipalGrace":
         rps = {
